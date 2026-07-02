@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openquant-engine"
+version = "1.0.0"
+description = "A corporate-finance engine pinned to worked exam answers: valuation, risk and portfolio math on real SEC EDGAR filings and market prices."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Alexandre Bevilacqua" }]
+requires-python = ">=3.11"
+classifiers = [
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Education",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+
+# The engine itself. Every version is the one the test suite passes against.
+dependencies = [
+    "numpy==2.3.4",
+    "pandas==2.3.3",
+    "requests==2.32.3",
+    "scipy==1.16.3",
+    "yfinance==1.3.0",
+]
+
+[project.optional-dependencies]
+# The FastAPI layer that serves the engine over HTTP.
+api = [
+    "fastapi==0.136.3",
+    "uvicorn==0.47.0",
+]
+dev = [
+    "pytest==9.0.3",
+    "pytest-cov==7.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/A-bv/openquant-engine"
+"Live product" = "https://a-bv.github.io/openquant/"
+
+[tool.setuptools.packages.find]
+include = ["openquant*"]
+
+[tool.pytest.ini_options]
+markers = [
+    'live: makes real network calls — skipped in normal CI runs (deselect with -m "not live")',
+]

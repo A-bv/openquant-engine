@@ -1,0 +1,34 @@
+# Ignore by location, never by extension — a blanket *.json rule once kept
+# this project's own manifest and data out of git.
+
+# Environment
+.env
+*.env
+
+# Fetched data cache
+data/cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# App build output and local env
+app/dist/
+app/node_modules/
+app/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE and local tooling
+.vscode/
+.idea/
+*.swp
+.claude/
