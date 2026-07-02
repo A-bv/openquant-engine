@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openquant-engine"
-version = "1.0.0"
+version = "0.1.0"
 description = "A corporate-finance engine pinned to worked exam answers: valuation, risk and portfolio math on real SEC EDGAR filings and market prices."
 readme = "README.md"
 license = { file = "LICENSE" }
