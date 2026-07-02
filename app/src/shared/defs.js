@@ -1,0 +1,17 @@
+export const DEFS = {
+  WACC: 'Weighted Average Cost of Capital: the minimum return investors demand given the company\'s mix of debt + equity and its risk. We use this as the DCF discount rate.',
+  FCF: 'Free Cash Flow: actual cash the business generates after paying for everything it needs to keep operating (operating expenses + capex). Unlike "profit," FCF cannot be manipulated by accounting choices.',
+  beta: 'β (beta): how much the stock moves relative to the market. β=1 moves with the market; β=2 moves twice as much; β=0.5 moves half as much. Used in CAPM.',
+  CAPM: 'Capital Asset Pricing Model: the formula rE = rf + β × MRP. Maps a stock\'s risk (β) into the return investors should demand.',
+  IV: 'Intrinsic Value: what our DCF model says one share is worth, based on projected future cash flows discounted to today.',
+  TV: 'Terminal Value: the value of all cash flows after the explicit 10-year forecast. Uses the growing perpetuity formula C(1+g)/(r−g).',
+  reverseDCF: 'Reverse DCF: solving for the growth rate that makes the model\'s intrinsic value equal today\'s market price. Tells you what the market is implicitly assuming.',
+  EBITDA: 'Earnings Before Interest, Taxes, Depreciation, and Amortization: a measure of operating cash earnings before financing and accounting choices.',
+  PE: 'Price-to-Earnings ratio: share price divided by annual earnings per share. Higher = market expects more future earnings.',
+  EVEBITDA: 'Enterprise Value to EBITDA: a leverage-neutral version of P/E, useful for comparing companies with different debt levels.',
+  FCFyield: 'Free Cash Flow yield: FCF per share divided by share price. Like a "dividend yield" but for actual cash generation.',
+  MRP: 'Market Risk Premium: the extra return investors demand from stocks vs Treasury bonds. Historically ~5-6% per year.',
+  rf: 'Risk-free rate: the return on a "safe" investment (typically 10-year US Treasury yield).',
+  hurdle: 'Hurdle rate: the minimum return YOU personally require to invest. The model uses WACC; you may use your own.',
+  marginOfSafety: 'Margin of Safety: Buffett\'s principle that model value should be materially above price before relying on the gap (e.g. 30%+).',
+}
