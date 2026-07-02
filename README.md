@@ -17,6 +17,17 @@ capm_cost_of_equity(risk_free_rate=0.08, beta=1.50, market_risk_premium=0.08)
 # A test guards this. If the formula drifts, the suite fails.
 ```
 
+## Use it from the web
+
+| Piece | Where |
+|---|---|
+| **The live labs (React app)** | [a-bv.github.io/openquant-engine](https://a-bv.github.io/openquant-engine/) — deployed automatically from `app/` |
+| **The API behind them** | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/A-bv/openquant-engine) — one click, reads `render.yaml` (free tier; wakes in ~1 min after idling) |
+
+The labs call the API for live tickers; until the API is deployed the app
+loads but its calculations report a connection error — honestly, like
+everything else here.
+
 ## Why this engine is different
 
 Most finance libraries ask you to trust them. This one shows its receipts:
