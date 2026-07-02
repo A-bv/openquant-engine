@@ -1,0 +1,210 @@
+{
+  "headline": {
+    "data_period": "Jan 2014 \u2192 Jan 2024",
+    "universe_size": 50,
+    "successful_runs": 33,
+    "undervalued": {
+      "n": 25,
+      "mean_realized_annualised_pct": 12.3
+    },
+    "overvalued": {
+      "n": 6,
+      "mean_realized_annualised_pct": 13.6
+    },
+    "fairly_priced": {
+      "n": 2,
+      "mean_realized_annualised_pct": 8.8
+    }
+  },
+  "verdict_hit_rate": {
+    "overvalued": {
+      "n": 6,
+      "mean_realized_annualised": 0.13586014336338995,
+      "median_realized_annualised": 0.1154420023495144,
+      "tickers": [
+        "ADBE",
+        "SCHW",
+        "AMZN",
+        "NKE",
+        "HON",
+        "SLB"
+      ],
+      "hit_rate": 0.6666666666666666,
+      "hit_rate_label": "% underperformed S&P (<12%)"
+    },
+    "fairly_priced": {
+      "n": 2,
+      "mean_realized_annualised": 0.08767578001632376,
+      "median_realized_annualised": 0.08767578001632376,
+      "tickers": [
+        "TXN",
+        "MMM"
+      ],
+      "hit_rate": null,
+      "hit_rate_label": null
+    },
+    "undervalued": {
+      "n": 25,
+      "mean_realized_annualised": 0.12340649485207977,
+      "median_realized_annualised": 0.1083080475124529,
+      "tickers": [
+        "AAPL",
+        "MSFT",
+        "CSCO",
+        "ORCL",
+        "IBM",
+        "QCOM",
+        "JNJ",
+        "PFE",
+        "UNH",
+        "MRK",
+        "AMGN",
+        "GILD",
+        "ABT",
+        "HD",
+        "MCD",
+        "SBUX",
+        "PG",
+        "KO",
+        "PEP",
+        "WMT",
+        "COST",
+        "BA",
+        "XOM",
+        "CVX",
+        "VZ"
+      ],
+      "hit_rate": 0.44,
+      "hit_rate_label": "% outperformed S&P (>12%)"
+    },
+    "model_inapplicable": {
+      "n": 9,
+      "mean_realized_annualised": 0.09325182399877854,
+      "median_realized_annualised": 0.0940533588944512,
+      "tickers": [
+        "INTC",
+        "BAC",
+        "AXP",
+        "TJX",
+        "GE",
+        "CAT",
+        "UPS",
+        "DUK",
+        "SO"
+      ],
+      "hit_rate": null,
+      "hit_rate_label": null
+    }
+  },
+  "calibration_regression": {
+    "n": 33,
+    "slope": 0.0023456482414441118,
+    "intercept": 11.30537590579432,
+    "r_squared": 0.038450993795636546,
+    "interpretation": "Slope > 0 means stocks with a higher model value gap later earned higher returns. R\u00b2 says how much of the cross-section the model explains."
+  },
+  "suitability_validity": {
+    "green": {
+      "n": 21,
+      "mean_abs_error_pct": 568.3966665336307,
+      "median_abs_error_pct": 381.88699155043173
+    },
+    "amber": {
+      "n": 12,
+      "mean_abs_error_pct": 293.05041971515476,
+      "median_abs_error_pct": 111.99374196372509
+    }
+  },
+  "sector_breakdown": {
+    "Cons.Disc": {
+      "n": 5,
+      "mean_predicted_upside_pct": 53.41848114442898,
+      "mean_realized_10yr_pct": 164.89543776177496,
+      "mean_error_pp": 111.47695661734596
+    },
+    "Energy": {
+      "n": 3,
+      "mean_predicted_upside_pct": 264.2139245997678,
+      "mean_realized_10yr_pct": 32.16454631810607,
+      "mean_error_pp": -232.04937828166172
+    },
+    "Financial": {
+      "n": 1,
+      "mean_predicted_upside_pct": -34.52998441995996,
+      "mean_realized_10yr_pct": 110.2592884822042,
+      "mean_error_pp": 144.78927290216416
+    },
+    "Health": {
+      "n": 7,
+      "mean_predicted_upside_pct": 483.0356861380455,
+      "mean_realized_10yr_pct": 111.87865240450303,
+      "mean_error_pp": -371.1570337335425
+    },
+    "Industrial": {
+      "n": 3,
+      "mean_predicted_upside_pct": 239.39406026306014,
+      "mean_realized_10yr_pct": 60.979028499229365,
+      "mean_error_pp": -178.41503176383083
+    },
+    "Staples": {
+      "n": 5,
+      "mean_predicted_upside_pct": 412.4424755692645,
+      "mean_realized_10yr_pct": 125.23523871246273,
+      "mean_error_pp": -287.2072368568018
+    },
+    "Tech": {
+      "n": 8,
+      "mean_predicted_upside_pct": 737.6468104565712,
+      "mean_realized_10yr_pct": 176.91027043797587,
+      "mean_error_pp": -560.7365400185954
+    },
+    "Telecom": {
+      "n": 1,
+      "mean_predicted_upside_pct": 1615.8330838904426,
+      "mean_realized_10yr_pct": 36.8986658742549,
+      "mean_error_pp": -1578.9344180161877
+    }
+  },
+  "failure_log": [
+    {
+      "ticker": "GOOGL",
+      "sector": "Tech",
+      "error": "InsufficientDataError: Not enough revenue history for GOOGL as of 2014-01-31."
+    },
+    {
+      "ticker": "JPM",
+      "sector": "Financial",
+      "error": "InsufficientDataError: As of 2014-01-31, JPM missing required fields: ['capital_expenditure']."
+    },
+    {
+      "ticker": "WFC",
+      "sector": "Financial",
+      "error": "InsufficientDataError: Not enough revenue history for WFC as of 2014-01-31."
+    },
+    {
+      "ticker": "GS",
+      "sector": "Financial",
+      "error": "InsufficientDataError: Not enough revenue history for GS as of 2014-01-31."
+    },
+    {
+      "ticker": "BLK",
+      "sector": "Financial",
+      "error": "InsufficientDataError: Not enough revenue history for BLK as of 2014-01-31."
+    },
+    {
+      "ticker": "DIS",
+      "sector": "Cons.Disc",
+      "error": "InsufficientDataError: Not enough revenue history for DIS as of 2014-01-31."
+    },
+    {
+      "ticker": "COP",
+      "sector": "Energy",
+      "error": "InsufficientDataError: As of 2014-01-31, COP missing required fields: ['capital_expenditure']."
+    },
+    {
+      "ticker": "NEE",
+      "sector": "Utility",
+      "error": "InsufficientDataError: As of 2014-01-31, NEE missing required fields: ['capital_expenditure']."
+    }
+  ]
+}
