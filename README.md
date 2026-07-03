@@ -17,16 +17,17 @@ capm_cost_of_equity(risk_free_rate=0.08, beta=1.50, market_risk_premium=0.08)
 # A test guards this. If the formula drifts, the suite fails.
 ```
 
-## Use it from the web
+## Use it from the web — live, no install
 
 | Piece | Where |
 |---|---|
-| **The live labs (React app)** | [a-bv.github.io/openquant-engine](https://a-bv.github.io/openquant-engine/) — deployed automatically from `app/` |
-| **The API behind them** | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/A-bv/openquant-engine) — one click, reads `render.yaml` (free tier; wakes in ~1 min after idling) |
+| **The live labs** | [a-bv.github.io/openquant-engine](https://a-bv.github.io/openquant-engine/) — the React app, deployed from `app/` |
+| **The API behind them** | [a-bv-openquant-api.hf.space](https://a-bv-openquant-api.hf.space/docs) — running free on Hugging Face Spaces (built from `deploy/hf/`) |
 
-The labs call the API for live tickers; until the API is deployed the app
-loads but its calculations report a connection error — honestly, like
-everything else here.
+Type any US ticker and the labs value it live from its SEC filings and market
+price. The free Space idles after long inactivity, so the first request after a
+quiet spell takes a few seconds to wake it. A `render.yaml` is also included for
+anyone who prefers to run the API on Render instead.
 
 ## Why this engine is different
 
