@@ -1,9 +1,5 @@
-"""OpenQuant API package."""
-import os
-import sys
+"""OpenQuant API package.
 
-# Make the repo root importable so `core` resolves no matter how the app is
-# launched (uvicorn from repo root, pytest, etc.).
-_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _ROOT not in sys.path:
-    sys.path.insert(0, _ROOT)
+Serves the installed ``openquant`` engine over HTTP. Install the engine
+(``pip install ".[api]"``) and run ``uvicorn api.main:app`` from the repo root.
+"""
