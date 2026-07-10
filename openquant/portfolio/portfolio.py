@@ -29,10 +29,12 @@ from typing import Optional, Sequence, Union
 import numpy as np
 import pandas as pd
 
-from openquant.config import DEFAULT_TRADING_DAYS, DEFAULT_RISK_FREE_RATE
 from openquant.common import annualise_returns_series, sharpe_from_stats
+from openquant.config import DEFAULT_RISK_FREE_RATE, DEFAULT_TRADING_DAYS
 
 Matrix = Union[pd.DataFrame, np.ndarray]
+# Weights may arrive as a plain sequence or as an already-built numpy array.
+Weights = Optional[Union[Sequence[float], np.ndarray]]
 
 
 # ── Covariance / correlation ──────────────────────────────────────────────────
@@ -85,7 +87,7 @@ def _as_matrix(cov: Matrix) -> np.ndarray:
     return cov.values if isinstance(cov, pd.DataFrame) else np.asarray(cov, dtype=float)
 
 
-def _normalise_weights(weights: Optional[Sequence[float]], n: int) -> np.ndarray:
+def _normalise_weights(weights: Weights, n: int) -> np.ndarray:
     """Equal-weight when None; otherwise rescale to sum to 1."""
     if weights is None:
         return np.full(n, 1.0 / n)
@@ -100,14 +102,14 @@ def _normalise_weights(weights: Optional[Sequence[float]], n: int) -> np.ndarray
 
 # ── Portfolio risk ────────────────────────────────────────────────────────────
 
-def portfolio_variance(weights: Optional[Sequence[float]], cov: Matrix) -> float:
+def portfolio_variance(weights: Weights, cov: Matrix) -> float:
     """Var(R_p) = wᵀ Σ w. Berk-DeMarzo Ch. 11.4."""
     S = _as_matrix(cov)
     w = _normalise_weights(weights, S.shape[0])
     return float(w @ S @ w)
 
 
-def portfolio_volatility(weights: Optional[Sequence[float]], cov: Matrix) -> float:
+def portfolio_volatility(weights: Weights, cov: Matrix) -> float:
     """σ_p = sqrt(wᵀ Σ w)."""
     return float(np.sqrt(portfolio_variance(weights, cov)))
 
@@ -117,7 +119,7 @@ def standalone_vols(cov: Matrix) -> np.ndarray:
     return np.sqrt(np.diag(_as_matrix(cov)))
 
 
-def independent_volatility(weights: Optional[Sequence[float]], cov: Matrix) -> float:
+def independent_volatility(weights: Weights, cov: Matrix) -> float:
     """
     Portfolio vol *if the holdings were uncorrelated*: sqrt(Σ w_i² σ_i²).
 
@@ -130,7 +132,7 @@ def independent_volatility(weights: Optional[Sequence[float]], cov: Matrix) -> f
     return float(np.sqrt(np.sum((w * sig) ** 2)))
 
 
-def diversification_ratio(weights: Optional[Sequence[float]], cov: Matrix) -> float:
+def diversification_ratio(weights: Weights, cov: Matrix) -> float:
     """
     DR = (Σ w_i σ_i) / σ_p ≥ 1  (Choueifaty & Coignard, 2008).
 
@@ -146,7 +148,7 @@ def diversification_ratio(weights: Optional[Sequence[float]], cov: Matrix) -> fl
     return float((w @ sig) / port_vol)
 
 
-def effective_number_of_bets(weights: Optional[Sequence[float]], cov: Matrix) -> float:
+def effective_number_of_bets(weights: Weights, cov: Matrix) -> float:
     """
     How many *independent* bets the book really is: N_eff = DR².
 
@@ -157,7 +159,7 @@ def effective_number_of_bets(weights: Optional[Sequence[float]], cov: Matrix) ->
     return diversification_ratio(weights, cov) ** 2
 
 
-def risk_contributions(weights: Optional[Sequence[float]], cov: Matrix) -> np.ndarray:
+def risk_contributions(weights: Weights, cov: Matrix) -> np.ndarray:
     """
     Each holding's share of total portfolio variance (sums to 1).
 
@@ -282,7 +284,7 @@ class DiversificationReport:
 
 def analyse_diversification(
     returns: pd.DataFrame,
-    weights: Optional[Sequence[float]] = None,
+    weights: Weights = None,
     risk_free_rate: float = DEFAULT_RISK_FREE_RATE,
     trading_days: int = DEFAULT_TRADING_DAYS,
 ) -> DiversificationReport:

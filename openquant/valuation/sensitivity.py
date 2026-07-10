@@ -15,10 +15,11 @@ Dependency rule: zero Streamlit imports. Pure Python. Fully testable.
 from __future__ import annotations
 
 from dataclasses import dataclass
+
 import numpy as np
 import pandas as pd
 
-from openquant.config import DEFAULT_TERMINAL_GROWTH_RATE, MAX_TERMINAL_GROWTH_RATE
+from openquant.config import DEFAULT_TERMINAL_GROWTH_RATE
 from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.fcf import FCFAnalysis
 from openquant.valuation.wacc import WACCResult
@@ -103,8 +104,7 @@ class SensitivityAnalyser:
             row = {}
             for w in wacc_values:
                 try:
-                    # Temporarily override WACC
-                    wacc_mock = _mock_wacc(wacc_result, w)
+                    # WACC is passed straight through to _compute_scenario below.
                     scenario = engine._compute_scenario(
                         scenario_name="Sensitivity",
                         growth_rate=float(g),
@@ -239,26 +239,3 @@ class SensitivityAnalyser:
         )
 
 
-def _mock_wacc(wacc_result: WACCResult, new_wacc: float) -> WACCResult:
-    """Create a copy of WACCResult with a different WACC value."""
-    from dataclasses import replace
-    return WACCResult(
-        ticker=wacc_result.ticker,
-        company_name=wacc_result.company_name,
-        market_cap=wacc_result.market_cap,
-        total_debt=wacc_result.total_debt,
-        firm_value=wacc_result.firm_value,
-        equity_weight=wacc_result.equity_weight,
-        debt_weight=wacc_result.debt_weight,
-        cost_of_equity=wacc_result.cost_of_equity,
-        cost_of_debt_pretax=wacc_result.cost_of_debt_pretax,
-        cost_of_debt_aftertax=wacc_result.cost_of_debt_aftertax,
-        tax_rate=wacc_result.tax_rate,
-        wacc=new_wacc,
-        beta=wacc_result.beta,
-        risk_free_rate=wacc_result.risk_free_rate,
-        market_risk_premium=wacc_result.market_risk_premium,
-        tax_shield_pv_note=wacc_result.tax_shield_pv_note,
-        wacc_sensitivity=wacc_result.wacc_sensitivity,
-        warnings=wacc_result.warnings,
-    )

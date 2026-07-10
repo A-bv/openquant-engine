@@ -26,8 +26,8 @@ from typing import Optional
 
 from scipy.optimize import brentq
 
-from openquant.valuation.dcf import DCFEngine
 from openquant.common import format_currency, format_percent
+from openquant.valuation.dcf import DCFEngine
 
 _ENGINE = DCFEngine()
 
@@ -228,7 +228,8 @@ def compare_now_vs_later(
     # Break-even rate: the r where PV(stream, r) == lump_sum.
     breakeven_rate: Optional[float] = None
     try:
-        f = lambda r: _ENGINE.npv(cashflows, r) - lump_sum
+        def f(r):
+            return _ENGINE.npv(cashflows, r) - lump_sum
         lo, hi = -0.99, 5.0
         if f(lo) * f(hi) < 0:
             breakeven_rate = float(brentq(f, lo, hi, xtol=1e-8))

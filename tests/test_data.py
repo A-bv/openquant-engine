@@ -10,13 +10,11 @@ Tests focus on:
 - Error handling
 """
 
-import json
 import sys
-import tempfile
 import time
 from datetime import datetime
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -27,14 +25,10 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from openquant.data import (
     CacheManager,
     DataFetcher,
-    DataFetchError,
+    FinancialStatements,
     InsufficientDataError,
     UnsupportedTickerError,
-    TickerValidation,
-    FinancialStatements,
-    PriceData,
 )
-
 
 # ── CacheManager tests ────────────────────────────────────────────────────────
 

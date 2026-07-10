@@ -12,14 +12,14 @@ Covers the edge cases that have caused real production bugs:
    after the positive-only filter is applied.
 """
 
+from datetime import datetime
+
 import numpy as np
 import pandas as pd
 import pytest
-from datetime import datetime
 
 from openquant.data import FinancialStatements
 from openquant.valuation.fcf import FCFAnalyser
-
 
 # ── Fixture builder ───────────────────────────────────────────────────────────
 

@@ -24,19 +24,15 @@ from typing import Optional
 
 import numpy as np
 import pandas as pd
-from scipy import stats
 
+from openquant.common import log_returns
 from openquant.config import (
-    DEFAULT_RISK_FREE_RATE,
-    DEFAULT_MARKET_RISK_PREMIUM,
-    DEFAULT_TRADING_DAYS,
-    BETA_LOOKBACK_YEARS,
-    BETA_ROLLING_WINDOW_DAYS,
     BETA_CONFIDENCE_LEVEL,
+    BETA_ROLLING_WINDOW_DAYS,
+    DEFAULT_MARKET_RISK_PREMIUM,
+    DEFAULT_RISK_FREE_RATE,
 )
 from openquant.data import FinancialStatements, PriceData
-from openquant.common import log_returns, annualise_return, annualise_vol, bootstrap_ci
-
 
 # ── EPFL formula sheet primitives ─────────────────────────────────────────────
 
@@ -374,14 +370,12 @@ class BetaEstimator:
             )
 
         # ── Hamada unlevering ─────────────────────────────────────────────────
+        # Left unset here: unlevering needs market cap (a current share price),
+        # which BetaEstimator does not receive. WACCBuilder.compute_wacc does the
+        # real unlevering once it has the market cap. See _unlever note there.
         unlevered_beta = None
         leverage_ratio = None
         tax_rate_used = None
-
-        if statements is not None:
-            unlevered_beta, leverage_ratio, tax_rate_used = self._unlever_beta(
-                beta, statements
-            )
 
         # ── Plain language ────────────────────────────────────────────────────
         beta_interp = self._interpret_beta(beta)
@@ -479,50 +473,6 @@ class BetaEstimator:
         # SE for beta (index 1)
         beta_var = float(vcov[1, 1])
         return float(np.sqrt(max(beta_var, 0)))
-
-    def _unlever_beta(
-        self,
-        beta_levered: float,
-        statements: FinancialStatements,
-    ) -> tuple[Optional[float], Optional[float], Optional[float]]:
-        """
-        Unlever beta using Hamada formula.
-
-        Formula (EPFL formula sheet):
-            βU = βE / (1 + (1−T) × D/E)
-
-        Assumes debt beta = zero — standard educational assumption.
-
-        Args:
-            beta_levered: Equity beta from OLS.
-            statements: Financial statements for D/E ratio.
-
-        Returns:
-            Tuple of (unlevered_beta, D/E ratio, tax_rate).
-        """
-        debt = statements.total_debt.dropna()
-        shares = statements.shares_outstanding.dropna()
-        tax = statements.effective_tax_rate.dropna()
-
-        if len(debt) == 0 or len(shares) == 0:
-            return None, None, None
-
-        # Latest values
-        latest_debt = float(debt.iloc[-1])
-        latest_shares = float(shares.iloc[-1])
-        tax_rate = float(tax.iloc[-1]) if len(tax) > 0 else 0.21
-
-        # Need share price for market cap — approximate with book ratio
-        # True unlevering requires current market cap
-        # We'll compute D/E using debt / (debt + approximate equity)
-        # This is a simplification — noted in UI
-        if latest_debt <= 0:
-            return float(beta_levered), 0.0, tax_rate
-
-        # Use debt as proxy for leverage — will be refined with market cap in wacc.py
-        # βU = βE / (1 + (1−T) × D/E)
-        # Without market cap we return the levered beta and flag it
-        return None, None, None  # Refined in WACCBuilder with market cap
 
     def _interpret_beta(self, beta: float) -> str:
         """
@@ -782,13 +732,6 @@ class WACCBuilder:
 
         equity_weight = market_cap / firm_value
         debt_weight = latest_debt / firm_value
-
-        # ── Hamada unlevering (with market cap) ───────────────────────────────
-        if latest_debt > 0 and market_cap > 0:
-            de_ratio = latest_debt / market_cap
-            unlevered_beta = beta / (1 + (1 - tax_rate) * de_ratio)
-        else:
-            unlevered_beta = beta
 
         # ── WACC ──────────────────────────────────────────────────────────────
         wacc = (

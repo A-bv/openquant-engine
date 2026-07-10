@@ -20,20 +20,20 @@ Out of scope (intentionally not tested):
 from __future__ import annotations
 
 import math
+
 import pytest
 
-from openquant.valuation.dcf import DCFEngine
 from openquant.common import (
     capital_gain_rate,
     min_variance_two_asset_weight,
     sharpe_from_stats,
 )
+from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.wacc import (
-    capm_cost_of_equity,
     beta_from_correlation,
+    capm_cost_of_equity,
     idiosyncratic_variance,
 )
-
 
 ENGINE = DCFEngine()
 

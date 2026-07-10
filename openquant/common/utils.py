@@ -9,19 +9,19 @@ All functions used across multiple core modules live here.
 
 from __future__ import annotations
 
+from typing import Callable, Union
+
 import numpy as np
 import pandas as pd
-from typing import Union
 
 from openquant.config import (
+    BETA_CONFIDENCE_LEVEL,
+    BOOTSTRAP_RESAMPLES,
     DEFAULT_RISK_FREE_RATE,
     DEFAULT_TRADING_DAYS,
-    BOOTSTRAP_RESAMPLES,
-    BETA_CONFIDENCE_LEVEL,
-    GROWTH_WINSOR_LOW,
     GROWTH_WINSOR_HIGH,
+    GROWTH_WINSOR_LOW,
 )
-
 
 # ── Return computation ────────────────────────────────────────────────────────
 
@@ -211,7 +211,7 @@ def annualise_vol_series(
 
 def bootstrap_ci(
     data: Union[np.ndarray, pd.Series],
-    statistic_fn: callable,
+    statistic_fn: Callable[..., float],
     n_resamples: int = BOOTSTRAP_RESAMPLES,
     confidence_level: float = BETA_CONFIDENCE_LEVEL,
     random_state: int = 42,

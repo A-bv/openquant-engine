@@ -21,8 +21,9 @@ def diversification(req: DiversificationRequest):
     (pinned against EPFL Sample Exam 2 P4 in tests/test_portfolio.py).
     """
     import pandas as pd
-    from openquant.data import DataFetcher, DataFetchError
+
     from openquant.common import log_returns
+    from openquant.data import DataFetcher, DataFetchError
     from openquant.portfolio import analyse_diversification
 
     tickers = req.tickers  # already cleaned/validated/deduped

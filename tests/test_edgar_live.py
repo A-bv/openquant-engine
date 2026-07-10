@@ -21,7 +21,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from openquant.data import EDGARClient
 
-
 KNOWN_CIKS = {
     "AAPL": "0000320193",
     "MSFT": "0000789019",

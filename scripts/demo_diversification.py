@@ -18,7 +18,6 @@ import sys
 # Make the repo root importable when run as `python scripts/demo_diversification.py`
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-import numpy as np
 import pandas as pd
 import yfinance as yf
 

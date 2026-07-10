@@ -18,18 +18,18 @@ Dependency rule: zero Streamlit imports. Pure Python.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
 from openquant.config import DEFAULT_TERMINAL_GROWTH_RATE
 from openquant.data import FinancialStatements
-from openquant.valuation.fcf import FCFAnalysis
-from openquant.valuation.wacc import WACCResult
-from openquant.valuation.dcf import DCFResult
-from openquant.valuation.reverse_dcf import ReverseDCFResult
 from openquant.valuation.assumption_diagnostic import AssumptionDiagnostic
+from openquant.valuation.dcf import DCFResult
+from openquant.valuation.fcf import FCFAnalysis
+from openquant.valuation.reverse_dcf import ReverseDCFResult
 from openquant.valuation.suitability import SuitabilityReport
+from openquant.valuation.wacc import WACCResult
 
 
 @dataclass

@@ -16,21 +16,17 @@ from dataclasses import asdict, dataclass
 from datetime import date
 from typing import Optional
 
-import numpy as np
-import pandas as pd
-
 from backtest.edgar_historical import (
-    fetch_statements_as_of,
     fetch_prices_as_of,
+    fetch_statements_as_of,
     get_price_on,
     realized_total_return,
-    cumulative_split_ratio_after,
 )
 from backtest.macro import get_macro
 from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.fcf import FCFAnalyser
-from openquant.valuation.reverse_dcf import ReverseDCFSolver, ReverseDCFResult
-from openquant.valuation.suitability import SuitabilityChecker, SuitabilityRating
+from openquant.valuation.reverse_dcf import ReverseDCFResult, ReverseDCFSolver
+from openquant.valuation.suitability import SuitabilityChecker
 from openquant.valuation.wacc import WACCBuilder
 
 
@@ -74,10 +70,10 @@ def analyse_as_of(ticker: str, as_of: date) -> BacktestRow:
     try:
         statements = fetch_statements_as_of(ticker, as_of)
         price_data = fetch_prices_as_of(ticker, as_of)
-        # yfinance returns split-adjusted closes. Scale EDGAR raw shares UP by
-        # the cumulative post-as_of split ratio so both are in the same units.
+        # Shares in `statements` are already split-adjusted by
+        # fetch_statements_as_of, so they line up with yfinance's split-adjusted
+        # closes without any further scaling here (see the note below).
         current_price = get_price_on(ticker, as_of, adjusted=True)
-        split_ratio = cumulative_split_ratio_after(ticker, as_of)
         macro = get_macro(as_of)
 
         fcf_a = FCFAnalyser().analyse(statements)

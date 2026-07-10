@@ -10,16 +10,15 @@ Covers:
 6. Terminal value percentage sanity
 """
 
-import numpy as np
+from datetime import datetime
+
 import pandas as pd
 import pytest
-from datetime import datetime
 
 from openquant.data import FinancialStatements
 from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.fcf import FCFAnalyser
 from openquant.valuation.wacc import WACCResult
-
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
 

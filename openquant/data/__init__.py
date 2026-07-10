@@ -17,14 +17,14 @@ Everything is re-exported here, so ``from openquant.data import X`` keeps workin
 
 from .data import *  # noqa: F401,F403  (re-exports models, errors, cache, providers, DataFetcher)
 from .fetcher import (  # noqa: F401
-    validate_ticker,
+    get_current_price,
     get_fundamentals,
     get_prices,
-    get_current_price,
+    validate_ticker,
 )
 from .fixtures import (  # noqa: F401
+    REQUIRED_STATEMENT_FIELDS,
     sample_financials,
     sample_prices,
     verify_financials,
-    REQUIRED_STATEMENT_FIELDS,
 )

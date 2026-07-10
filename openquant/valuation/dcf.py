@@ -28,26 +28,21 @@ Dependency rule: zero Streamlit imports. Pure Python. Fully testable.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
 
-import numpy as np
 import pandas as pd
 
 from openquant.config import (
-    FORECAST_HORIZON_YEARS,
     DEFAULT_TERMINAL_GROWTH_RATE,
+    FORECAST_HORIZON_YEARS,
     MAX_TERMINAL_GROWTH_RATE,
-    TERMINAL_GROWTH_MATURE_WARNING,
-    TERMINAL_VALUE_WARNING_THRESHOLD,
-    TERMINAL_VALUE_SEVERE_THRESHOLD,
-    SCENARIO_CONSERVATIVE_GROWTH_MULT,
-    SCENARIO_OPTIMISTIC_GROWTH_MULT,
     SCENARIO_CONSERVATIVE_WACC_ADD,
     SCENARIO_OPTIMISTIC_WACC_SUB,
+    TERMINAL_GROWTH_MATURE_WARNING,
+    TERMINAL_VALUE_SEVERE_THRESHOLD,
+    TERMINAL_VALUE_WARNING_THRESHOLD,
 )
-from openquant.valuation.fcf import FCFAnalysis, FCFProjection
+from openquant.valuation.fcf import FCFAnalysis
 from openquant.valuation.wacc import WACCResult
-
 
 # ── Data structures ───────────────────────────────────────────────────────────
 
@@ -359,7 +354,6 @@ class DCFEngine:
 
         warnings = []
 
-        base_fcf = projection.base_fcf
         projected_fcf = projection.projected_fcf
 
         # ── Present value of projected FCFs ───────────────────────────────────
@@ -519,7 +513,9 @@ class DCFEngine:
                 IRR within [low, high], or multiple IRRs from cashflow-sign changes).
         """
         from scipy.optimize import brentq
-        f = lambda r: self.npv(cash_flows, r)
+
+        def f(r):
+            return self.npv(cash_flows, r)
         try:
             return float(brentq(f, low, high, xtol=1e-9, maxiter=200))
         except ValueError as e:

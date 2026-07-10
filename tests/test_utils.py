@@ -10,23 +10,20 @@ import pandas as pd
 import pytest
 
 from openquant.common import (
-    log_returns,
-    simple_returns,
     annualise_return,
-    annualise_vol,
     annualise_returns_series,
-    annualise_vol_series,
+    annualise_vol,
     bootstrap_ci,
-    sharpe_ratio,
-    sharpe_ratio_with_ci,
     cagr,
-    winsorize_series,
-    median_growth_rate,
     format_currency,
     format_percent,
+    log_returns,
+    median_growth_rate,
+    sharpe_ratio,
+    sharpe_ratio_with_ci,
     validate_weights,
+    winsorize_series,
 )
-
 
 # ── log_returns ───────────────────────────────────────────────────────────────
 
@@ -140,7 +137,9 @@ class TestBootstrapCI:
         """Bootstrap CI should contain the true statistic most of the time."""
         np.random.seed(42)
         data = np.random.normal(0.001, 0.02, 252)
-        mean_fn = lambda x: np.mean(x)
+
+        def mean_fn(x):
+            return np.mean(x)
         lower, upper = bootstrap_ci(data, mean_fn, n_resamples=500)
         true_mean = np.mean(data)
         assert lower < true_mean < upper
@@ -171,8 +170,6 @@ class TestSharpeRatio:
 
     def test_zero_vol_returns_zero(self):
         """Zero volatility returns zero Sharpe (avoids division by zero)."""
-        returns = pd.Series([0.001] * 252)
-        # Make returns constant (zero vol after small perturbation removed)
         returns_const = pd.Series([0.0] * 252)
         sr = sharpe_ratio(returns_const, risk_free_rate=0.0)
         assert sr == 0.0

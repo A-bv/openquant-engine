@@ -20,14 +20,12 @@ import pytest
 from pydantic import ValidationError
 
 from openquant.data import FinancialStatements
-from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.fcf import FCFAnalyser
 from openquant.valuation.suitability import (
     SuitabilityChecker,
     SuitabilityRating,
 )
-from openquant.valuation.wacc import WACCResult, WACCBuilder
-
+from openquant.valuation.wacc import WACCBuilder
 
 # ── Helpers (mirrors test_dcf.make_statements) ───────────────────────────────
 
@@ -64,8 +62,8 @@ class TestWACCRejectsBadValues:
     def test_zero_market_cap_raises_not_silent(self):
         """firm_value = 0 (no market cap, no debt) must raise ValueError
         rather than letting an unusable WACC propagate downstream."""
-        from tests.test_dcf import make_statements as ts_make
         from openquant.data import PriceData
+        from tests.test_dcf import make_statements as ts_make
         st = ts_make([1e9] * 5)
         idx = pd.date_range("2020-01-01", periods=300)
         prices = pd.Series(np.linspace(100, 110, 300), index=idx)
@@ -110,12 +108,16 @@ class TestRedFlagsSurfaceWithBlocking:
 
     def test_red_dimensions_not_suppressed_by_blocking(self):
         """A blocking suitability issue must not hide RED diagnostic dims."""
+        from openquant.valuation.assumption_diagnostic import (
+            AssumptionDiagnostic,
+            DiagnosticRating,
+            DimensionScore,
+        )
         from openquant.valuation.red_flags import RedFlagBuilder
         from openquant.valuation.suitability import (
-            SuitabilityReport, SuitabilityCheck, SuitabilityCheckName,
-        )
-        from openquant.valuation.assumption_diagnostic import (
-            AssumptionDiagnostic, DimensionScore, DiagnosticRating,
+            SuitabilityCheck,
+            SuitabilityCheckName,
+            SuitabilityReport,
         )
         blocking = SuitabilityCheck(
             name=SuitabilityCheckName.SECTOR, passed=False,
@@ -220,7 +222,8 @@ class TestErrorLeakage:
         """An uncaught exception inside analyse() must return a generic
         message with a request_id, not the raw str(e)."""
         from fastapi import HTTPException
-        from api.main import analyse, AnalyseRequest
+
+        from api.main import AnalyseRequest, analyse
 
         def _boom(self, ticker):
             raise RuntimeError(
@@ -269,6 +272,7 @@ class TestCORSRegex:
 
     def test_regex_rejects_arbitrary_vercel_subdomain(self):
         import re
+
         from api.main import _ALLOWED_ORIGIN_REGEX
         pat = re.compile(_ALLOWED_ORIGIN_REGEX)
         # An attacker-controlled Vercel app must NOT match
@@ -277,6 +281,7 @@ class TestCORSRegex:
 
     def test_regex_accepts_project_subdomain(self):
         import re
+
         from api.main import _ALLOWED_ORIGIN_REGEX
         pat = re.compile(_ALLOWED_ORIGIN_REGEX)
         # The project's own Vercel deployments must match

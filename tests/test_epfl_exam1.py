@@ -22,8 +22,7 @@ import pytest
 
 from openquant.valuation.dcf import DCFEngine
 from openquant.valuation.fcf import fcf_from_ebit_components
-from openquant.valuation.wacc import unlever_beta_hamada, capm_cost_of_equity
-
+from openquant.valuation.wacc import capm_cost_of_equity, unlever_beta_hamada
 
 ENGINE = DCFEngine()
 

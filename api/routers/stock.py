@@ -207,7 +207,7 @@ def analyse(req: AnalyseRequest):
         )
 
         # 8 — Reverse DCF
-        from openquant.valuation.reverse_dcf import ReverseDCFSolver, ReverseDCFResult
+        from openquant.valuation.reverse_dcf import ReverseDCFResult, ReverseDCFSolver
         rev_r = ReverseDCFSolver().solve(
             fcf_analysis=fcf_a,
             wacc_result=wacc_r,
@@ -221,8 +221,8 @@ def analyse(req: AnalyseRequest):
 
         # 8b — Assumption diagnostic, red flags, and audit trail.
         from openquant.valuation.assumption_diagnostic import DiagnosticBuilder
-        from openquant.valuation.red_flags import RedFlagBuilder
         from openquant.valuation.audit_trail import AuditTrailBuilder
+        from openquant.valuation.red_flags import RedFlagBuilder
 
         rev_for_context = rev_r if not rev_failed else None
         diagnostic = DiagnosticBuilder().build(

@@ -27,7 +27,7 @@ class PriceFetcher:
     def fetch(
         self,
         ticker: str,
-        years: int = BETA_LOOKBACK_YEARS,
+        years: float = BETA_LOOKBACK_YEARS,
     ) -> pd.Series:
         """
         Fetch adjusted closing prices for a ticker.

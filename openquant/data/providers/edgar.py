@@ -14,7 +14,7 @@ from typing import Optional
 import pandas as pd
 import requests
 
-from openquant.config import EDGAR_SUBMISSIONS_URL, EDGAR_FACTS_URL
+from openquant.config import EDGAR_FACTS_URL, EDGAR_SUBMISSIONS_URL
 
 from ..errors import DataFetchError
 
