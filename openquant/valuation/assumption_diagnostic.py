@@ -36,30 +36,25 @@ Dependency rule: zero Streamlit imports. Pure Python. Fully testable.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-import numpy as np
-import pandas as pd
-
 from openquant.config import (
-    DIAGNOSTIC_GREEN_MAX,
-    DIAGNOSTIC_AMBER_MAX,
-    SEVERITY_NONE,
-    SEVERITY_MILD,
-    SEVERITY_SEVERE,
-    GROWTH_SEVERE_MULT,
-    GROWTH_MILD_MULT,
     ASSET_LIGHT_CAPEX_THRESHOLD,
-    TERMINAL_VALUE_WARNING_THRESHOLD,
-    TERMINAL_VALUE_SEVERE_THRESHOLD,
-    BETA_RANGE_SEVERE_THRESHOLD,
     BETA_RANGE_MILD_THRESHOLD,
-    FCF_MARGIN_SD_SEVERE,
+    BETA_RANGE_SEVERE_THRESHOLD,
     FCF_MARGIN_SD_MILD,
-    REVENUE_SWING_SEVERE,
+    FCF_MARGIN_SD_SEVERE,
+    GROWTH_MILD_MULT,
+    GROWTH_SEVERE_MULT,
     REVENUE_SWING_MILD,
+    REVENUE_SWING_SEVERE,
+    SEVERITY_MILD,
+    SEVERITY_NONE,
+    SEVERITY_SEVERE,
+    TERMINAL_VALUE_SEVERE_THRESHOLD,
+    TERMINAL_VALUE_WARNING_THRESHOLD,
 )
 from openquant.data import FinancialStatements
 from openquant.valuation.dcf import DCFResult
@@ -402,7 +397,7 @@ class DiagnosticBuilder:
                 severity=SEVERITY_MILD,
                 rating=DiagnosticRating.AMBER,
                 message=(
-                    f"Some data gaps detected."
+                    "Some data gaps detected."
                     + (f" Missing: {', '.join(missing)}." if missing else "")
                     + (f" Sparse: {', '.join(sparse)}." if sparse else "")
                 ),

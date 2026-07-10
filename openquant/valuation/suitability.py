@@ -17,24 +17,21 @@ from enum import Enum
 from typing import Optional
 
 import numpy as np
-import pandas as pd
 
 from openquant.config import (
+    DEFAULT_TERMINAL_GROWTH_RATE,
+    EXCLUDED_SECTORS,
+    FCF_MARGIN_SD_MILD,
+    FCF_MARGIN_SD_SEVERE,
+    GROWTH_WINSOR_HIGH,
+    GROWTH_WINSOR_LOW,
     MIN_FCF_HISTORY_YEARS,
     MIN_PRICE_HISTORY_YEARS,
     MIN_TRADING_DAYS,
-    FCF_MARGIN_SD_SEVERE,
-    FCF_MARGIN_SD_MILD,
-    REVENUE_SWING_SEVERE,
     REVENUE_SWING_MILD,
-    EXCLUDED_SECTORS,
-    DEFAULT_RISK_FREE_RATE,
-    GROWTH_WINSOR_LOW,
-    GROWTH_WINSOR_HIGH,
+    REVENUE_SWING_SEVERE,
 )
-from openquant.config import DEFAULT_TERMINAL_GROWTH_RATE
 from openquant.data import FinancialStatements
-
 
 # ── Enums ─────────────────────────────────────────────────────────────────────
 
@@ -540,7 +537,7 @@ class SuitabilityChecker:
             name=SuitabilityCheckName.REVENUE_STABILITY,
             passed=True,
             rating=SuitabilityRating.GREEN,
-            message=f"Revenue shows consistent growth with no significant declines.",
+            message="Revenue shows consistent growth with no significant declines.",
         )
 
     def _check_one_time_events(

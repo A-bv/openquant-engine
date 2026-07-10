@@ -15,18 +15,17 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from openquant.portfolio import (
-    covariance_from_vols_and_corr,
-    portfolio_volatility,
-    independent_volatility,
-    effective_number_of_bets,
-    diversification_ratio,
-    risk_contributions,
-    min_variance_weights,
-    analyse_diversification,
-)
 from openquant.common import min_variance_two_asset_weight
-
+from openquant.portfolio import (
+    analyse_diversification,
+    covariance_from_vols_and_corr,
+    diversification_ratio,
+    effective_number_of_bets,
+    independent_volatility,
+    min_variance_weights,
+    portfolio_volatility,
+    risk_contributions,
+)
 
 # ── 1. Pin against EPFL Sample Exam 2 — Problem 4 ──────────────────────────────
 

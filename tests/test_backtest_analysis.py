@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+from api.main import calibration
 from backtest.analyse import (
     SUMMARY_JSON,
     add_derived,
@@ -11,7 +12,6 @@ from backtest.analyse import (
     load,
     verdict_hit_rate,
 )
-from api.main import calibration
 
 
 @pytest.fixture(scope="module")

@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 # ── EPFL Exam 1 Problem 2 — Valuation fixture ────────────────────────────────
 
 @pytest.fixture

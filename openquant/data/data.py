@@ -16,33 +16,19 @@ Custom exceptions propagate cleanly to UI layer.
 
 from __future__ import annotations
 
-import json
-import os
-import time
-import hashlib
 import logging
-import uuid
+import os
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from pathlib import Path
+from datetime import datetime
 from typing import Optional
 
 import numpy as np
 import pandas as pd
-import requests
 
 from openquant.config import (
-    EDGAR_BASE_URL,
-    EDGAR_SUBMISSIONS_URL,
-    EDGAR_FACTS_URL,
-    FMP_BASE_URL,
-    CACHE_DIR,
-    CACHE_TTL_RECENT_SECONDS,
-    CROSS_VALIDATION_TOLERANCE,
-    CROSS_VALIDATION_FIELDS,
-    DEFAULT_MARKET_INDEX,
     BETA_LOOKBACK_YEARS,
+    CACHE_DIR,
+    DEFAULT_MARKET_INDEX,
 )
 
 logger = logging.getLogger(__name__)
@@ -51,37 +37,26 @@ logger = logging.getLogger(__name__)
 # ── Custom exceptions ─────────────────────────────────────────────────────────
 
 # Moved to openquant/data/errors.py; re-exported here for backward compatibility.
+# ── Cache manager ─────────────────────────────────────────────────────────────
+# Moved to openquant/data/cache.py; re-exported here for backward compatibility.
+from .cache import CacheManager
 from .errors import (
     DataFetchError,
     InsufficientDataError,
     UnsupportedTickerError,
-    DataInconsistencyWarning,
 )
 
-
 # ── Data structures ───────────────────────────────────────────────────────────
-
 # Moved to openquant/data/models.py; re-exported here for backward compatibility.
 from .models import FinancialStatements, PriceData, TickerValidation
 
-
-# ── Cache manager ─────────────────────────────────────────────────────────────
-
-# Moved to openquant/data/cache.py; re-exported here for backward compatibility.
-from .cache import CacheManager
-
-
 # ── EDGAR client ──────────────────────────────────────────────────────────────
-
 # Moved to openquant/data/providers/edgar.py; re-exported here for backward compatibility.
 from .providers.edgar import EDGARClient
 
-
 # ── yfinance price fetcher (mock-friendly interface) ─────────────────────────
-
 # Moved to openquant/data/providers/prices.py; re-exported here for backward compatibility.
 from .providers.prices import PriceFetcher
-
 
 # ── Main DataFetcher ──────────────────────────────────────────────────────────
 
@@ -186,7 +161,7 @@ class DataFetcher:
         has_financials = fut_fin.result()
 
         # Determine badge
-        from openquant.config import MIN_TRADING_DAYS, MIN_PRICE_HISTORY_YEARS
+        from openquant.config import MIN_PRICE_HISTORY_YEARS, MIN_TRADING_DAYS
         min_days = MIN_TRADING_DAYS * MIN_PRICE_HISTORY_YEARS
 
         if not has_financials:
@@ -321,7 +296,9 @@ class DataFetcher:
             )
 
         # Align all series to common index (fiscal year ends)
-        # Use last 10 years
+        # Use last 10 years. `revenue` is guaranteed non-None here by the
+        # `missing` required-fields check above.
+        assert revenue is not None
         common_idx = revenue.index[-10:] if len(revenue) >= 10 else revenue.index
 
         def _align(s: Optional[pd.Series]) -> pd.Series:

@@ -33,7 +33,7 @@ anyone who prefers to run the API on Render instead.
 
 Most finance libraries ask you to trust them. This one shows its receipts:
 
-1. **Exam-pinned correctness.** The 191-test offline suite checks the engine
+1. **Exam-pinned correctness.** The ~190-test offline suite checks the engine
    against hand-worked answers from two university finance exams
    ([`tests/test_epfl_exam1.py`](tests/test_epfl_exam1.py),
    [`tests/test_epfl_exam2.py`](tests/test_epfl_exam2.py)) — DCF, WACC, CAPM,
@@ -94,7 +94,7 @@ of it — the engine stays pure Python with five dependencies.
 
 ```bash
 make install    # engine (editable) + app dependencies
-make test       # 191 offline tests, ~1s
+make test       # ~190 offline tests, ~1s
 make dev        # API on :8000 and React app on :5173 together
 ```
 

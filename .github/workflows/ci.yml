@@ -19,6 +19,12 @@ jobs:
       - name: Install the engine as a package
         run: pip install -e ".[api,dev]"
 
+      - name: Lint the engine (ruff)
+        run: ruff check .
+
+      - name: Type-check the engine (mypy)
+        run: mypy
+
       - name: Run the offline test suite (exam oracles included)
         run: python -m pytest -q -m "not live"
 

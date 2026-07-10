@@ -40,19 +40,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-import numpy as np
-import pandas as pd
-from scipy.optimize import brentq, OptimizeResult
+from scipy.optimize import brentq
 
 from openquant.config import (
-    FORECAST_HORIZON_YEARS,
     DEFAULT_TERMINAL_GROWTH_RATE,
-    MAX_TERMINAL_GROWTH_RATE,
-    DEFAULT_RISK_FREE_RATE,
+    FORECAST_HORIZON_YEARS,
 )
 from openquant.valuation.fcf import FCFAnalysis
 from openquant.valuation.wacc import WACCResult
-
 
 # ── Data structures ───────────────────────────────────────────────────────────
 
@@ -522,16 +517,6 @@ class ReverseDCFSolver:
         """
         from openquant.valuation.dcf import DCFEngine
         engine = DCFEngine()
-
-        forward = engine.value(
-            fcf_analysis=fcf_analysis,
-            wacc_result=wacc_result,
-            current_price=result.current_price,
-            shares_outstanding=result.shares_outstanding,
-            net_debt=result.net_debt,
-            terminal_growth_rate=result.terminal_growth_rate,
-            horizon=result.horizon,
-        )
 
         # Use base scenario with implied growth rate
         base = engine._compute_scenario(

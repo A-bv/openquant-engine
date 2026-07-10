@@ -23,12 +23,11 @@ import pandas as pd
 from openquant.data import (
     EDGARClient,
     FinancialStatements,
+    InsufficientDataError,
     PriceData,
     PriceFetcher,
     UnsupportedTickerError,
-    InsufficientDataError,
 )
-
 
 # Historical XBRL tags — companies switched tags over the years.
 # Extending the live TAG_MAPPINGS with older variants so historical filings
@@ -404,8 +403,8 @@ def fetch_prices_as_of(
     Returns prices for both the stock and ^GSPC (S&P 500). The
     final close on or before `as_of` is the "current price" at that time.
     """
-    from dateutil.relativedelta import relativedelta
     import yfinance as yf
+    from dateutil.relativedelta import relativedelta
 
     end = pd.Timestamp(as_of)
     start = end - relativedelta(years=lookback_years)

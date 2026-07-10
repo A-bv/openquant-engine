@@ -18,7 +18,7 @@ Dependency rule: zero Streamlit imports. Pure Python. Fully testable.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 from openquant.valuation.assumption_diagnostic import AssumptionDiagnostic, DiagnosticRating
@@ -84,7 +84,7 @@ class RedFlagBuilder:
         Returns:
             RedFlagSummary with ordered flags.
         """
-        flags = []
+        flags: list[str] = []
         # Used for confidence computation downstream; independent from the
         # decision to suppress RED diagnostic dimensions (we no longer do).
         has_blocking = bool(suitability.blocking_issues)

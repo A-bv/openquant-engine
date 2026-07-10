@@ -25,17 +25,15 @@ from typing import Optional
 import numpy as np
 import pandas as pd
 
+from openquant.common import format_currency, winsorize_series
 from openquant.config import (
     FORECAST_HORIZON_YEARS,
+    GROWTH_WINSOR_HIGH,
+    GROWTH_WINSOR_LOW,
     SCENARIO_CONSERVATIVE_GROWTH_MULT,
     SCENARIO_OPTIMISTIC_GROWTH_MULT,
-    GROWTH_WINSOR_LOW,
-    GROWTH_WINSOR_HIGH,
-    MAX_TERMINAL_GROWTH_RATE,
 )
 from openquant.data import FinancialStatements
-from openquant.common import median_growth_rate, winsorize_series, format_currency
-
 
 # ── EPFL formula sheet primitive ──────────────────────────────────────────────
 

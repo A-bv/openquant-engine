@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os
+from importlib.metadata import PackageNotFoundError, version
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,7 +18,14 @@ from api.routers import money, portfolio, stock
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))
 
-app = FastAPI(title="OpenQuant API", version="1.0.0")
+# Single source of truth: the installed package version from pyproject.toml.
+# Falls back gracefully when the package is run from a source tree uninstalled.
+try:
+    API_VERSION = version("openquant-engine")
+except PackageNotFoundError:  # pragma: no cover - only when not pip-installed
+    API_VERSION = "0.0.0+local"
+
+app = FastAPI(title="OpenQuant API", version=API_VERSION)
 
 # CORS — explicit local dev origins plus an anchored regex for this project's
 # Vercel deployments (override via ALLOWED_ORIGIN_REGEX for other hosts).
@@ -45,7 +53,7 @@ app.add_middleware(
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "1.0.0"}
+    return {"status": "ok", "version": API_VERSION}
 
 
 app.include_router(money.router)
@@ -61,11 +69,11 @@ from api.models import (  # noqa: E402,F401
     DiversificationRequest,
     NowOrLaterRequest,
 )
-from api.sanitize import _sanitize  # noqa: E402,F401
 from api.routers.stock import (  # noqa: E402,F401
-    analyse,
-    calibration,
+    _audit_payload,
     _diagnostic_payload,
     _red_flags_payload,
-    _audit_payload,
+    analyse,
+    calibration,
 )
+from api.sanitize import _sanitize  # noqa: E402,F401

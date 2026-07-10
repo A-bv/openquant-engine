@@ -16,14 +16,13 @@ from __future__ import annotations
 
 import argparse
 import csv
-import sys
 import time
 from dataclasses import asdict, fields
 from datetime import date
 from pathlib import Path
 
 from backtest.run import BacktestRow, analyse_as_of, compute_realized
-from backtest.universe import TICKERS, BACKTEST_UNIVERSE
+from backtest.universe import BACKTEST_UNIVERSE, TICKERS
 
 AS_OF = date(2014, 1, 31)
 HORIZON = date(2024, 1, 31)
@@ -107,7 +106,7 @@ def main() -> None:
     if successes:
         from collections import Counter
         verdicts = Counter(r.verdict for r in successes)
-        print(f"\nVerdict distribution:")
+        print("\nVerdict distribution:")
         for v, c in verdicts.most_common():
             print(f"  {v or '(none)':20s} {c:3d}")
 
